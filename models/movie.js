@@ -7,6 +7,7 @@ MovieSchema = new Schema(
         name: {type: String, required: true},
         director: {type: Schema.Types.ObjectId, ref: 'Director', required: true},
         description: {type: String, required: true},
+        release: {type: String, required: true},
         genre: [{type: Schema.Types.ObjectId, ref: 'Genre'}]
     }
 );
