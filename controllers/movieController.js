@@ -1,7 +1,24 @@
 var Movie = require('../models/movie');
+var Director = require('../models/director');
+var Genre = require('../models/genre');
+
+var async = require('async');
 
 exports.index = function(req, res) {
-    res.send('NOT IMPLEMENTED: Site Home Page');
+    
+    async.parallel({
+        movie_count: function(callback) {
+            Movie.countDocuments({}, callback);
+        },
+        director_count: function(callback){
+            Director.countDocuments({}, callback);
+        },
+        genre_count: function(callback) {
+            Genre.countDocuments({}, callback);
+        }
+    }, function(err, results){
+        res.render('index', {title: 'Movie Database', err:err, data:results})
+    })
 };
 
 // Display list of all movies.
