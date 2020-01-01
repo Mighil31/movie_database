@@ -35,7 +35,7 @@ DirectorSchema
 });
 
 // Virtual for director's URL
-AuthorSchema
+DirectorSchema
 .virtual('url')
 .get(function () {
 	return '/author/' + this._id;

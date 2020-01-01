@@ -3,7 +3,7 @@ console.log('This script populates test movies , directors and genres into the d
 var userArgs = process.argv.slice(2);
 
 var async = require('async');
-var Director = require('/models/director');
+var Director = require('./models/director');
 var Movie = require('./models/movie');
 var Genre = require('./models/genre');
 
@@ -30,8 +30,8 @@ function directorCreate(first_name, last_name, d_birth, cb) {
             return
         }
         console.log('New Director: ' + director);
-        directors.push(author)
-        cb(null, author)
+        directors.push(director)
+        cb(null, director)
     })
 }
 
@@ -58,7 +58,7 @@ function movieCreate(name, director,release, desc, genre, cb) {
         description: desc,
         release: release,
     }
-    if (genre != false) bookdetail.genre = genre;
+    if (genre != false) moviedetail.genre = genre;
 
     var movie =  new Movie(moviedetail);
     movie.save(function (err) {
@@ -152,61 +152,61 @@ function createMovies(cb) {
     async.parallel([
         function(callback) {
             movieCreate('Django Unchained', directors[0], '2012','With the help of a German bounty hunter, a freed slave sets ' +
-            'out to rescue his wife from a brutal Mississippi plantation owner.', [genre[3], genre[2], genre[6]], callback);
+            'out to rescue his wife from a brutal Mississippi plantation owner.', [genres[3], genres[2], genres[6]], callback);
         },
         function(callback) {
             movieCreate('Inglourious Basterds', directors[0], '2009', 'In Nazi-occupied France during World War II, a plan to ' +
             "assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner's" +
-            "vengeful plans for the same.", [genre[14], genre[6], genre[4]], callback);
+            "vengeful plans for the same.", [genres[14], genres[6], genres[4]], callback);
         },
         function(callback) {
             movieCreate('Inception', directors[1], '2010', 'A thief who steals corporate secrets through the use of dream-sharing ' +
-            'technology is given the inverse task of planting an idea into the mind of a C.E.O.', [genre[10], genre[14], genre[1]], callback);
+            'technology is given the inverse task of planting an idea into the mind of a C.E.O.', [genres[10], genres[14], genres[1]], callback);
         },
         function(callback) {
             movieCreate('The Prestige', directors[1],'2006', 'After a tragic accident, two stage magicians engage in a battle to ' +
-            'create the ultimate illusion while sacrificing everything they have to outwit each other.', [genre[6], genre[12], genre[1]], callback);
+            'create the ultimate illusion while sacrificing everything they have to outwit each other.', [genres[6], genres[12], genres[1]], callback);
         },
         function(callback) {
             movieCreate('Se7en', directors[2], '1995', 'Two detectives, a rookie and a veteran, hunt a serial killer who uses ' +
-            'the seven deadly sins as his motives.', [genre[3], genre[2], genre[6]], callback);
+            'the seven deadly sins as his motives.', [genres[3], genres[2], genres[6]], callback);
         },
         function(callback) {
             movieCreate('The Social Network', directors[2], '2010', 'As Harvard student Mark Zuckerberg creates the social networking site ' +
             'that would become known as Facebook, he is sued by the twins who claimed he stole their idea, and by the co-founder who was ' +
-            'later squeezed out of the business.', [genre[6]], callback);
+            'later squeezed out of the business.', [genres[6]], callback);
         },
         function(callback) {
             movieCreate('The Wolf of Wall Street', directors[3], '2013', 'Based on the true story of Jordan Belfort, from his rise to a ' +
             'wealthy stock-broker living the high life to his fall involving crime, corruption' + 
-            'and the federal government. ', [genre[7], genre[6]], callback);
+            'and the federal government. ', [genres[7], genres[6]], callback);
         },
         function(callback) {
             movieCreate('Shutter Island', directors[3], '2010', 'In 1954, a U.S. Marshal investigates the disappearance of a murderer who ' +
-            'escaped from a hospital for the criminally insane.', [genre[12], genre[8]], callback);
+            'escaped from a hospital for the criminally insane.', [genres[12], genres[8]], callback);
         },
         function(callback) {
             movieCreate('Guardians of the Galaxy', directors[4], '2014', 'A group of intergalactic criminals must pull together to ' +
-            'stop a fanatical warrior with plans to purge the universe.', [genre[10], genre[14], genre[5], genre[11]], callback);
+            'stop a fanatical warrior with plans to purge the universe.', [genres[10], genres[14], genres[5], genres[11]], callback);
         },
         function(callback) {
             movieCreate('Thor: Ragnarok', directors[5], '2017', 'Imprisoned on the planet Sakaar, Thor must race against time ' +
             'to return to Asgard and stop Ragnarök, the destruction of his world, at the hands of the ' + 
-            'powerful and ruthless villain Hela.', [genre[10], genre[14], genre[5], genre[11]], callback);
+            'powerful and ruthless villain Hela.', [genres[10], genres[14], genres[5], genres[11]], callback);
         },
         function(callback) {
             movieCreate('Jigarthanda', directors[6], '2014', 'An aspiring director targets a ruthless gangster because he ' +
             'wants to make a violent gangster film. His discreet attempts to research the gangster fail miserably.' + 
-            'Finally when he gets caught snooping, things hit the fan.', [genre[10], genre[7], genre[6]], callback);
+            'Finally when he gets caught snooping, things hit the fan.', [genres[10], genres[7], genres[6]], callback);
         },
         function(callback) {
             movieCreate('Asuran', directors[7], '2019', 'The teenage son of a farmer from an underprivileged caste kills a rich, ' +
             'upper caste landlord. Will the farmer, a loving father and a pacifist by heart, be able to save his ' + 
-            'hot-blooded son is the rest of the story.', [genre[10], genre[6]], callback);
+            'hot-blooded son is the rest of the story.', [genres[10], genres[6]], callback);
         },
         function(callback) {
             movieCreate('Vada Chennai', directors[7], '2018', 'A young carrom player in north Chennai becomes a reluctant ' +
-            'participant in a war between two warring gangsters.', [genre[10], genre[14], genre[5], genre[11]], callback);
+            'participant in a war between two warring gangsters.', [genres[10], genres[14], genres[5], genres[11]], callback);
         },
 
     ])
