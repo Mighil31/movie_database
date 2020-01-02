@@ -7,23 +7,22 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-	color: #00b7ff;
-}
-
-ul {
+.nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
 }
-
-li {
+.header h1
+{
+	font-size: 45px;
+}
+.nav li {
   float: left;
 }
 
-li a,
+.nav li a,
 .dropbtn {
   display: inline-block;
   color: white;
@@ -32,7 +31,7 @@ li a,
   text-decoration: none;
 }
 
-li a:hover,
+.nav li a:hover,
 .dropdown:hover .dropbtn {
   background-color: red;
 }
@@ -64,4 +63,28 @@ li.dropdown {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.header
+{
+	text-align: center;
+	margin: 30px auto 0 auto;
+	font-size: 20px;
+}
+
+a {
+	color: #00b7ff;
+}
+
+.movie_list
+{
+	margin-left: 30px;
+	margin-top: 30px;
+}
+
+.content
+{
+	margin: 20px auto 0 auto;
+	border: 1px solid black;
+	width: 70%;
 }

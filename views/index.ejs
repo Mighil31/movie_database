@@ -1,6 +1,18 @@
 <%- include header %>
 
-	<h1><%= title %></h1>
-	<p>Welcome to <%= title %></p>
+	<div class="header">
+		<h1><%= title %></h1>
+		<p>Welcome to The <%= title %></p>
+	</div>	
+
+	<div class="center">
+		<h3>Here's What we got</h3>
+		<ul>
+			<li>Movies: <%= data.movie_count %></li>
+			<li>Directors: <%= data.director_count %></li>
+			<li>Genres: <%= data.genre_count %></li>
+		</ul>
+	</div>
+	
 	</body>
 </html>

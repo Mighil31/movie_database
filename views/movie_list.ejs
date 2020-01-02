@@ -1,0 +1,25 @@
+<%- include header %>
+
+    <div class="content">
+        <h1>List of movies</h1>
+        <% movie_list.sort(function(a, b) { %>
+            <% let textA = a.name.toUpperCase(); %>
+            <% let textB = b.name.toUpperCase(); %>
+            <% return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; %>
+            <% }); %>
+
+        <div class="movie_list">
+            <ul>
+                <% if (movie_list.length > 0) { %>
+                    <% for(var i = 0;i < movie_list.length; i++) { %>
+                            <li style="margin-bottom: 10px"><a href=<%=movie_list[i].url%> ><%= movie_list[i].name %></a> - <%= movie_list[i].director.name %></li>
+                    <% } %>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    
+    <body>
+<html>
+
+

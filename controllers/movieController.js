@@ -23,7 +23,12 @@ exports.index = function(req, res) {
 
 // Display list of all movies.
 exports.movie_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: movie list');
+    Movie.find({}, 'name director')
+        .populate('director')
+        .exec(function(err, list_movies) {
+            if (err) { return next(err)}
+            res.render('movie_list', {title: 'Movie List', movie_list: list_movies});
+        })
 };
 
 // Display detail page for a specific movie.
