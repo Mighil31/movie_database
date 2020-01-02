@@ -1,0 +1,21 @@
+<%- include header %>
+
+    <div class="content">
+        <h1>List of Genres</h1>
+
+        <div class="movie_list">
+            <ul>
+                <% if (genre_list.length > 0) { %>
+                    <% for(var i = 0;i < genre_list.length; i++) { %>
+                            <li style="margin-bottom: 10px"><a href=<%=genre_list[i].url%> ><%= genre_list[i].name %></a> </li>
+                    <% } %>
+                <% } %>
+
+            </ul>
+        </div>
+    </div>
+    
+    <body>
+<html>
+
+
