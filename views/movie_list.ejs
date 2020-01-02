@@ -14,6 +14,8 @@
                     <% for(var i = 0;i < movie_list.length; i++) { %>
                             <li style="margin-bottom: 10px"><a href=<%=movie_list[i].url%> ><%= movie_list[i].name %></a> - <%= movie_list[i].director.name %></li>
                     <% } %>
+                <% } else { %>
+                    <li style="margin-bottom: 10px">There are no movies in the database currently</li>
                 <% } %>
             </ul>
         </div>

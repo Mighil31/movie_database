@@ -1,9 +1,14 @@
-var director = require('../models/director');
+var Director = require('../models/director');
 
 // Display list of all directors
 exports.director_list = function(req, res) {
-    res.send('Director list');
-}
+    Director.find()
+    .sort([['last_name', 'ascending']])
+    .exec(function(err, list_directors) {
+    if (err) { return next(err); }
+    res.render('director_list', {title: 'Director List', director_list: list_directors});
+    });
+};
 
 // Display detailed page of a specified director
 exports.director_detail = function(req, res) {
