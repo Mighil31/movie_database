@@ -1,0 +1,30 @@
+<%- include header %>
+
+        <div class="content">
+            <h1>Create a Genre</h1>
+
+            <div class="form">
+                <form action="" method="POST">
+                    <% if (typeof errors != 'undefined'){%>
+                        <p class="error">
+                        <% errors.forEach(function(el) { %>
+                            <span><%= el.msg %></span>
+                        <% }) %>
+                        </p>
+                    <% } %>
+                    <label for="new_genre">Enter new Genre </label>
+                    <input id="new_genre" type="text" name="name" value=
+                    <% var str; %>
+                    <% if(typeof genre == 'undefined') { %>
+                        <% str = ""; %>
+                    <% } else { %>
+                        <% str = genre.name %>
+                    <% } %> 
+                    <%= str %> >
+                    <input type="submit" value="OK">
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>
