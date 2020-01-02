@@ -33,7 +33,18 @@ exports.movie_list = function(req, res) {
 
 // Display detail page for a specific movie.
 exports.movie_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: movie detail: ' + req.params.id);
+    Movie.findById(req.params.id)
+    .populate('director')
+    .populate('genre')
+    .exec(function(err, results) {
+        if (err) { return next(err)};
+        if(results == null) {
+            var err = new Error('Movie not found')
+            err.status = 404;
+            return next(err);
+        }
+        res.render('movie_detail', { title: results.eventNames, movie:results});
+    })
 };
 
 // Display movie create form on GET.
