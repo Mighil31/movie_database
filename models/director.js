@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -26,12 +27,18 @@ DirectorSchema
 	return fullname;
 });
 
+DirectorSchema
+.virtual('dob')
+.get(function () {
+  return moment(this.date_of_birth).format('MMMM Do, YYYY');
+});
+
 // Virtual for director age
 DirectorSchema
 .virtual('age')
 .get(function() {
 	var today = new Date;
-	return (today.getFullYear - this.date_of_birth.getFullYear()).toString();
+	return (today.getFullYear() - this.date_of_birth.getFullYear()).toString();
 });
 
 // Virtual for director's URL

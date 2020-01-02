@@ -4,15 +4,15 @@
         <h1 class=" movie_heading"><%= movie.name %></h1>
 
         <div class="movie_detail">
-            <p><span class="sub-heading">Director</span>: <%= movie.director.name %></p>
+            <p><span class="sub-heading">Director</span>: <a href=<%=movie.director.url%> ><%= movie.director.name %></a></p>
             <% var genreString = ""; %>
             <% movie.genre.forEach(function(val, index) { %>
-                <% genreString += val.name %>
+                <% genreString += `<a href= ${val.url}>${val.name}</a>` %>
                 <% if(index < movie.genre.length - 1) { %>
                     <% genreString += " ,"; %>
                 <% } %> 
             <% }) %>
-            <p><span class="sub-heading">Genre</span>: <%= genreString %></p>
+            <p><span class="sub-heading">Genre</span>: <%- genreString %></p>
             <p><span class="sub-heading">Plot Summary</span>: <%= movie.description %></p>
             <p><span class="sub-heading">Release Year</span>: <%= movie.release %></p>
 

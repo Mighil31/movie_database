@@ -1,4 +1,6 @@
 var Director = require('../models/director');
+var async = require('async');
+var Movie = require('../models/movie');
 
 // Display list of all directors
 exports.director_list = function(req, res) {
@@ -12,7 +14,26 @@ exports.director_list = function(req, res) {
 
 // Display detailed page of a specified director
 exports.director_detail = function(req, res) {
-    res.send('Director detail');
+    
+    async.parallel({
+        director: function(callback) {
+            Director.findById(req.params.id)
+            .exec(callback);
+        },
+        directors_movies: function(callback) {
+            Movie.find({ 'director': req.params.id})
+            .exec(callback)
+        }
+    }, function(err, results){
+        if (err) { return next(err); }
+        if (results.director == null) {
+            var err = new Error("Director not Found");
+            err.status = 404;
+            return next(err);
+        }
+
+        res.render('director_detail', {title: 'Director Details', director: results.director, director_movies: results.directors_movies})
+    })
 }
 
 // director create form on GET
