@@ -28,6 +28,21 @@ DirectorSchema
 });
 
 DirectorSchema
+.virtual('aname')
+.get(function() {
+
+	var fullname = '';
+	if (this.first_name && this.last_name) {
+		fullname = this.first_name + this.last_name
+	}
+	if (!this.first_name || !this.last_name) {
+		fullname = '';
+	}
+
+	return fullname;
+});
+
+DirectorSchema
 .virtual('dob')
 .get(function () {
   return moment(this.date_of_birth).format('MMMM Do, YYYY');

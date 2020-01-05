@@ -16,6 +16,11 @@
             <p><span class="sub-heading">Plot Summary</span>: <%= movie.description %></p>
             <p><span class="sub-heading">Release Year</span>: <%= movie.release %></p>
 
+            <% var link = movie.url + '/delete'; %>
+            <a class='button' href=<%= link %> >Delete Movie</a>
+
+            <% var link2 = movie.url + '/update'; %>
+            <a class='button' href=<%= link2 %> >Update Movie</a>
         </div>
     </div>
     

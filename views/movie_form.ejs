@@ -1,0 +1,65 @@
+<%- include header %>
+
+        <div class="content">
+            <h1>Add a movie</h1>
+
+            <div class="form">
+                <form action="" method="POST">
+                    <label for="name">Movie Name</label>
+                    <input type="text" id="name" name="name" value=
+                    <% var str; %>
+                    <% if(typeof movie == 'undefined') { %>
+                        <% str = ""; %>
+                    <% } else { %>
+                        <% str = movie.name %>
+                    <% } %> 
+                    "<%= str %>" >
+
+                    <label for="director">Director</label>
+                    <select name="director">
+                        <% directors.forEach(function(director) { %>
+                            <% if(typeof movie !== 'undefined') { %>
+                                <option value= <%= director._id %> <%= (director._id.toString()==movie.director || director._id.toString()==movie.director._id) ? 'selected="selected"' : "" %> ><%= director.name %> </option>
+                        <% } else { %>
+                            <option value= <%= director._id %> ><%= director.name %> </option>
+                            <% } %>
+                        <% }) %>
+                    </select>
+                    
+                    <label for="description">Plot Summary</label>
+                    <textarea id="description" style="height: 120px" name="description"><% var str; %><% if(typeof movie == 'undefined') { %><% str = ""; %><% } else { %><% str = movie.description %><% } %><%= str %></textarea>
+
+                    <label for="release">Year of Release</label>
+                    <input type="text" id="release" name="release" value=
+                    <% var str; %>
+                    <% if(typeof movie == 'undefined') { %>
+                        <% str = ""; %>
+                    <% } else { %>
+                        <% str = movie.release %>
+                    <% } %> 
+                    <%= str %> >
+
+                    <label for="genre">Genre:</label>
+                    <div>
+                        <% genres.forEach(function(genre) { %>
+                            <div style='display: inline; padding-right:10px;'>
+                                <input type='checkbox' <%= genre.checked ? "checked" : "" %> name='genre' id=<%= genre._id %> value=<%= genre._id %> >
+                                <label for= <%= genre._id %> ><%= genre.name %> </label>
+                        <% }) %>
+                    </div>
+
+                    <input type="submit" value="OK" style="display:block">
+
+                    <% if (typeof errors != 'undefined'){%>
+                        <p class="error">
+                        <% errors.forEach(function(el) { %>
+                            <span><%= el.msg %></span>
+                        <% }) %>
+                        </p>
+                    <% } %>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

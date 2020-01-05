@@ -1,0 +1,52 @@
+<%- include header %>
+
+        <div class="content">
+            <h1>Create a Director</h1>
+
+            <div class="form">
+                <form action="" method="POST">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" value=
+                    <% var str; %>
+                    <% if(typeof director == 'undefined') { %>
+                        <% str = ""; %>
+                    <% } else { %>
+                        <% str = director.first_name %>
+                    <% } %> 
+                    <%= str %> >
+
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value=
+                    <% var str; %>
+                    <% if(typeof director == 'undefined') { %>
+                        <% str = ""; %>
+                    <% } else { %>
+                        <% str = director.last_name %>
+                    <% } %> 
+                    <%= str %> >
+
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input type="date" id="dob" name="date_of_birth" value=
+                    <% var str; %>
+                    <% if(typeof director == 'undefined') { %>
+                        <% str = ""; %>
+                    <% } else { %>
+                        <% str = director.date_of_birth %>
+                    <% } %> 
+                    <%= str %> >
+
+                    <input type="submit" value="OK" style="display:block">
+
+                    <% if (typeof errors != 'undefined'){%>
+                        <p class="error">
+                        <% errors.forEach(function(el) { %>
+                            <span><%= el.msg %></span>
+                        <% }) %>
+                        </p>
+                    <% } %>
+                </form>
+            </div>
+        </div>
+
+    </body>
+</html>

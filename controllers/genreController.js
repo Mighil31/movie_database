@@ -93,12 +93,37 @@ exports.genre_create_post = [
 
 // Display Genre delete form on GET.
 exports.genre_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete GET');
+    async.parallel({
+        genre: function(callback) {
+            Genre.findById(req.params.id).exec(callback);
+        }
+    }, function(err, results){
+        if (err) { return next(err); }
+        if (results.genre==null) {
+            res.redirect('/genre');
+        }
+        
+        res.render('genre_delete', { title: 'Delete genre', genre: results.genre } );
+    })
 };
 
 // Handle Genre delete on POST.
 exports.genre_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre delete POST');
+    async.parallel({
+        genre: function(callback) {
+          Genre.findById(req.body.genreid).exec(callback)
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        // Success
+        
+        Genre.findByIdAndRemove(req.body.genreid, function deletegenre(err) {
+            if (err) { return next(err); }
+
+            res.redirect('/genres')
+        })
+        
+    });
 };
 
 // Display Genre update form on GET.
