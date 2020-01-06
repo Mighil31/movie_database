@@ -4,6 +4,9 @@
         <h1 class=" movie_heading"><%= movie.name %></h1>
 
         <div class="movie_detail">
+            <div class="image">
+                <img src='/images/1917.jpg'>
+            </div>
             <p><span class="sub-heading">Director</span>: <a href=<%=movie.director.url%> ><%= movie.director.name %></a></p>
             <% var genreString = ""; %>
             <% movie.genre.forEach(function(val, index) { %>
@@ -20,7 +23,7 @@
             <a class='button' href=<%= link %> >Delete Movie</a>
 
             <% var link2 = movie.url + '/update'; %>
-            <a class='button' href=<%= link2 %> >Update Movie</a>
+            <a class='button blue' href=<%= link2 %> >Update Movie</a>
         </div>
     </div>
     
