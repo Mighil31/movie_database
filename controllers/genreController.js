@@ -4,6 +4,9 @@ var Movie = require('../models/movie');
 var async = require('async');
 const validator = require('express-validator');
 
+const { body,validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
+
 // Display list of all Genre.
 exports.genre_list = function(req, res) {
     Genre.find()
@@ -48,14 +51,14 @@ exports.genre_create_get = function(req, res) {
 exports.genre_create_post = [
 
     // Validate that name field is not empty
-    validator.body('name', 'Genre name required').isLength({ min: 1}).trim(),
+    body('name', 'Genre name required').isLength({ min: 1}).trim(),
 
     // Sanitize (escape) name field
-    validator.sanitizeBody('name').escape(),
+    sanitizeBody('name').escape(),
 
     (req, res, next) => {
 
-        const errors = validator.validationResult(req);
+        const errors = validationResult(req);
 
         // Create a genre object with escaped and trimmed data.
         var genre = new Genre(
@@ -128,10 +131,58 @@ exports.genre_delete_post = function(req, res) {
 
 // Display Genre update form on GET.
 exports.genre_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update GET');
+
+    async.parallel({
+        genre: function(callback) {
+            Genre.find(callback);
+        },
+        }, function(err, results) {
+
+            if (err) { return next(err); }
+            if (results.genre==null) { // No results.
+                var err = new Error('genre not found');
+                err.status = 404;
+                return next(err);
+            }
+            res.render('genre_form', { title: 'Update movie', genre: results.genre});
+        });
+
 };
 
 // Handle Genre update on POST.
-exports.genre_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Genre update POST');
-};
+exports.genre_update_post = [
+   
+    body('name', 'Name must not be empty.').isLength({ min: 1 }).trim(),
+    sanitizeBody('name').escape(),
+
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        var genre = new Genre(
+            { name: req.body.name,
+                _id:req.params.id,
+            }
+        );
+        
+        if (!errors.isEmpty()) {
+            async.parallel({
+                genres: function(callback) {
+                    Genre.find(callback);
+                },
+            }, function(err, results) {
+                if (err) { return next(err); }
+                res.render('genre_form', { title: 'Update genre', genre: results.genres, errors: errors.array() });
+            });
+            return;
+        }
+        else {
+
+            Genre.findByIdAndUpdate(req.params.id, genre, {}, function (err,themovie) {
+                if (err) { return next(err); }
+
+                   res.redirect(themovie.url);
+                });
+        }
+    }
+];
