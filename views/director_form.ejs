@@ -4,7 +4,7 @@
             <h1>Create a Director</h1>
 
             <div class="form">
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <label for="first_name">First Name</label>
                     <input type="text" id="first_name" name="first_name" value=
                     <% var str; %>
@@ -31,13 +31,15 @@
                     <% if(typeof director == 'undefined') { %>
                         <% str = ""; %>
                     <% } else { %>
-                        <% str = director.date_of_birth %>
+                        <% str = director.date_formatted %>
                     <% } %> 
-                    <%= str %> >
+                    "<%= str %>" >
+
                     <div>
                         <% if(typeof director != 'undefined' && director.image ) { %>
                             <img src=<%= director.image_file %>  width='100px' height='100px' style="margin-top:30px; margin-bottom:30px">
                             <label>Change current image</label>
+                            <input name="curImage" value=<%= director.image %> type="hidden">
                             <input name="image" type="file" style="margin-top: 30px; margin-bottom: 30px">
                         <% } else { %>
                             <label>Image:</label>

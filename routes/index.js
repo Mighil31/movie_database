@@ -14,9 +14,10 @@ const fileStorage = multer.diskStorage({
     cb(null, './public/images')
   },
   filename: (req, file, cb) => {
+    var name = (req.body.name) ? req.body.name : req.body.first_name;
     cb(
       null,
-      req.body.name.replace(/ /g,'') +
+        name +
         Date.now() +
         path.extname(file.originalname)
     )
@@ -86,8 +87,7 @@ router.get('/director/:id/delete', director_controller.director_delete_get);
 router.post('/director/:id/delete', director_controller.director_delete_post);
 
 // GET request to update director.
-router.get('/director/:id/update', director_controller.director_update_get
-    );
+router.get('/director/:id/update', director_controller.director_update_get );
 
 // POST request to update director.
 router.post('/director/:id/update', 

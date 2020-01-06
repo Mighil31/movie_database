@@ -62,6 +62,14 @@ DirectorSchema
 	return (today.getFullYear() - this.date_of_birth.getFullYear()).toString();
 });
 
+DirectorSchema.virtual('date_formatted').get(function() {
+	return moment(this.date_of_birth).format('YYYY-MM-DD')
+  })
+
+DirectorSchema.virtual('name').get(function() {
+	return this.first_name + this.last_name
+})
+
 // Virtual for director's URL
 DirectorSchema
 .virtual('url')

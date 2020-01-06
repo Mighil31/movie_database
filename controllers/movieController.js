@@ -36,7 +36,7 @@ exports.movie_list = function(req, res) {
 };
 
 // Display detail page for a specific movie.
-exports.movie_detail = function(req, res) {
+exports.movie_detail = function(req, res, next) {
     Movie.findById(req.params.id)
     .populate('director')
     .populate('genre')

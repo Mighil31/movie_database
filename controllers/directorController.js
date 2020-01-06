@@ -144,17 +144,23 @@ exports.director_delete_post = function(req, res, next) {
 
 // Display director update form on GET.
 exports.director_update_get = function(req, res) {
-    async.parallel({
-        director: function(callback) {
-            Director.find(callback);
-        },
-        }, function(err, results) {
-
-            if (err) { return next(err); }
-
-            res.render('director_form', { title: 'Update Director', director: results.director});
+    Director.findById(req.params.id).exec((err, director) => {
+        if (err) {
+          return next(err);
+        }
+    
+        if (director === null) {
+          const err = new Error("director not found");
+          err.status = 404;
+          return next(err);
+        }
+    
+        res.render("director_form", {
+          title: "Update director",
+          director: director
         });
-};
+      });
+    };
 
 // Handle director update on POST.
 exports.director_update_post = [
@@ -187,7 +193,7 @@ exports.director_update_post = [
                     last_name: req.body.last_name,
                     date_of_birth: req.body.date_of_birth,
                     _id:req.params.id,
-                    image: req.file ? req.file.filename : null
+                    image: req.file ? req.file.filename : req.body.curImage
                 });
             Director.findByIdAndUpdate(req.params.id, director, {}, function (err,thedirector) {
                 if (err) { return next(err); }
