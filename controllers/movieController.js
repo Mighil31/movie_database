@@ -3,6 +3,7 @@ var Director = require('../models/director');
 var Genre = require('../models/genre');
 
 var async = require('async');
+var multer = require('multer');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
@@ -79,8 +80,6 @@ exports.movie_create_post = [
             else
             req.body.genre=new Array(req.body.genre);
         }
-        console.log(req.body.genre)
-        console.log('PPPPPPP')
         next();
     },
 
@@ -109,7 +108,8 @@ exports.movie_create_post = [
             director: req.body.director,
             description: req.body.description,
             release: req.body.release,
-            genre: req.body.genre
+            genre: req.body.genre,
+            image: req.file ? req.file.filename : null
         });
 
         if (!errors.isEmpty()) {
@@ -185,7 +185,7 @@ exports.movie_delete_post = function(req, res) {
 };
 
 // Display movie update form on GET.
-exports.movie_update_get = function(req, res) {
+exports.movie_update_get = function(req, res, next) {
 
         async.parallel({
             movie: function(callback) {
@@ -200,12 +200,12 @@ exports.movie_update_get = function(req, res) {
             }, function(err, results) {
 
                 if (err) { return next(err); }
-                if (results.movie==null) { // No results.
+                if (results.movie==null) {
                     var err = new Error('movie not found');
                     err.status = 404;
                     return next(err);
                 }
-                // Mark our selected genres as checked.
+                // Mark selected genres as checked.
                 for (var allGenres = 0; allGenres < results.genre.length; allGenres++) {
                     for (var movieGenres = 0; movieGenres < results.movie.genre.length; movieGenres++) {
                         if (results.genre[allGenres]._id.toString()==results.movie.genre[movieGenres]._id.toString()) {
@@ -215,7 +215,6 @@ exports.movie_update_get = function(req, res) {
                 }
                 res.render('movie_form', { title: 'Update movie', directors: results.director, genres: results.genre, movie: results.movie });
             });
-    
     };
 
 // Handle movie update on POST.
@@ -235,6 +234,9 @@ exports.movie_update_post = [
         }
         console.warn(req.body.genre)
         console.log(req.body.genre)
+        console.log(req.body.name)
+        console.log(req.body.director)
+        console.log(req.body.released)
         next();
     },
    
@@ -248,24 +250,21 @@ exports.movie_update_post = [
     sanitizeBody('director').escape(),
     sanitizeBody('released').escape(),
 
-    // Process request after validation and sanitization.
     (req, res, next) => {
 
-        // Extract the validation errors from a request.
         const errors = validationResult(req);
 
-        // Create a movie object with escaped/trimmed data and old id.
         var movie = new Movie(
           { name: req.body.name,
             director: req.body.director,
             description: req.body.description,
             release: req.body.release,
             genre: (typeof req.body.genre==='undefined') ? [] : req.body.genre,
-            _id:req.params.id 
+            _id:req.params.id,
+            image: req.file ? req.file.filename : req.body.curImage
            });
         
         if (!errors.isEmpty()) {
-            // There are errors. Render form again with sanitized values/error messages.
 
             // Get all directors and genres for form.
             async.parallel({
@@ -278,7 +277,7 @@ exports.movie_update_post = [
             }, function(err, results) {
                 if (err) { return next(err); }
 
-                // Mark our selected genres as checked.
+                // Mark selected genres as checked.
                 for (let i = 0; i < results.genres.length; i++) {
                     if (movie.genre.indexOf(results.genres[i]._id) > -1) {
                         results.genres[i].checked='true';
@@ -289,10 +288,10 @@ exports.movie_update_post = [
             return;
         }
         else {
-            // Data from form is valid. Update the record.
+            // Update record
             Movie.findByIdAndUpdate(req.params.id, movie, {}, function (err,themovie) {
                 if (err) { return next(err); }
-                   // Successful - redirect to movie detail page.
+
                    res.redirect(themovie.url);
                 });
         }

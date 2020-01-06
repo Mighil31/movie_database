@@ -18,8 +18,8 @@ var directors = []
 var genres = []
 var movies = []
 
-function directorCreate(first_name, last_name, d_birth, cb) {
-    directordetail= {first_name:first_name , last_name: last_name}
+function directorCreate(first_name, last_name, d_birth, image, cb) {
+    directordetail= {first_name:first_name , last_name: last_name, image: image}
     if (d_birth != false) directordetail.date_of_birth = d_birth;
 
     var director = new Director(directordetail);
@@ -50,13 +50,14 @@ function genreCreate(name, cb) {
     });
 }
 
-function movieCreate(name, director,release, desc, genre, cb) {
+function movieCreate(name, director,release, desc, genre, image, cb) {
 
     moviedetail = {
         name: name,
         director: director,
         description: desc,
         release: release,
+        image: image,
     }
     if (genre != false) moviedetail.genre = genre;
 
@@ -76,28 +77,28 @@ function movieCreate(name, director,release, desc, genre, cb) {
 function createDirectorsGenres(cb) {
     async.series([
         function(callback) {
-            directorCreate('Quentin', 'Tarantino', '1963-03-27', callback)
+            directorCreate('Quentin', 'Tarantino', '1963-03-27', 'quentin-tarantino.jpg',callback)
         },
         function(callback) {
-            directorCreate('Christopher', 'Nolan', '1970-07-30', callback)
+            directorCreate('Christopher', 'Nolan', '1970-07-30', 'christopher-nolan.jpg', callback)
         },
         function(callback) {
-            directorCreate('David', 'Fincher', '1962-08-28', callback)
+            directorCreate('David', 'Fincher', '1962-08-28', 'david-fincher.jpg', callback)
         },
         function(callback) {
-            directorCreate('Martin', 'Scorsese', '1942-11-17', callback)
+            directorCreate('Martin', 'Scorsese', '1942-11-17', 'martin-scorsese.jpg', callback)
         },
         function(callback) {
-            directorCreate('James', 'Gunn', '1966-08-05', callback)
+            directorCreate('James', 'Gunn', '1966-08-05', 'james-gunn.jpg', callback)
         },
         function(callback) {
-            directorCreate('Taika', 'Waititi', '1975-08-16', callback)
+            directorCreate('Taika', 'Waititi', '1975-08-16', 'taika-waititi.jpg', callback)
         },
         function(callback) {
-            directorCreate('Karthik', 'Subbaraj', '1983-03-19', callback)
+            directorCreate('Karthik', 'Subbaraj', '1983-03-19', 'karthik-subbaraj.jpg', callback)
         },
         function(callback) {
-            directorCreate('Vetri', 'Maaran', '1975-09-04', callback)
+            directorCreate('Vetri', 'Maaran', '1975-09-04', 'vetri-maaran.jpg', callback)
         },
         function(callback) { // 0
             genreCreate("Fantasy", callback);
@@ -152,61 +153,61 @@ function createMovies(cb) {
     async.parallel([
         function(callback) {
             movieCreate('Django Unchained', directors[0], '2012','With the help of a German bounty hunter, a freed slave sets ' +
-            'out to rescue his wife from a brutal Mississippi plantation owner.', [genres[3], genres[2], genres[6]], callback);
+            'out to rescue his wife from a brutal Mississippi plantation owner.', [genres[3], genres[2], genres[6]], 'django-unchained.jpg', callback);
         },
         function(callback) {
             movieCreate('Inglourious Basterds', directors[0], '2009', 'In Nazi-occupied France during World War II, a plan to ' +
             "assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner's" +
-            "vengeful plans for the same.", [genres[14], genres[6], genres[4]], callback);
+            "vengeful plans for the same.", [genres[14], genres[6], genres[4]], 'inglourious-basterds.jpg', callback);
         },
         function(callback) {
             movieCreate('Inception', directors[1], '2010', 'A thief who steals corporate secrets through the use of dream-sharing ' +
-            'technology is given the inverse task of planting an idea into the mind of a C.E.O.', [genres[10], genres[14], genres[1]], callback);
+            'technology is given the inverse task of planting an idea into the mind of a C.E.O.', [genres[10], genres[14], genres[1]], 'inception.jpg', callback);
         },
         function(callback) {
             movieCreate('The Prestige', directors[1],'2006', 'After a tragic accident, two stage magicians engage in a battle to ' +
-            'create the ultimate illusion while sacrificing everything they have to outwit each other.', [genres[6], genres[12], genres[1]], callback);
+            'create the ultimate illusion while sacrificing everything they have to outwit each other.', [genres[6], genres[12], genres[1]], 'the-prestige.jpg', callback);
         },
         function(callback) {
             movieCreate('Se7en', directors[2], '1995', 'Two detectives, a rookie and a veteran, hunt a serial killer who uses ' +
-            'the seven deadly sins as his motives.', [genres[3], genres[2], genres[6]], callback);
+            'the seven deadly sins as his motives.', [genres[3], genres[2], genres[6]], 'se7en.jpg', callback);
         },
         function(callback) {
             movieCreate('The Social Network', directors[2], '2010', 'As Harvard student Mark Zuckerberg creates the social networking site ' +
             'that would become known as Facebook, he is sued by the twins who claimed he stole their idea, and by the co-founder who was ' +
-            'later squeezed out of the business.', [genres[6]], callback);
+            'later squeezed out of the business.', [genres[6]], 'the-social-network.jpg', callback);
         },
         function(callback) {
             movieCreate('The Wolf of Wall Street', directors[3], '2013', 'Based on the true story of Jordan Belfort, from his rise to a ' +
             'wealthy stock-broker living the high life to his fall involving crime, corruption' + 
-            'and the federal government. ', [genres[7], genres[6]], callback);
+            'and the federal government. ', [genres[7], genres[6]], 'the-wolf-of-wall-street.jpg', callback);
         },
         function(callback) {
             movieCreate('Shutter Island', directors[3], '2010', 'In 1954, a U.S. Marshal investigates the disappearance of a murderer who ' +
-            'escaped from a hospital for the criminally insane.', [genres[12], genres[8]], callback);
+            'escaped from a hospital for the criminally insane.', [genres[12], genres[8]], 'shutter-island.jpg', callback);
         },
         function(callback) {
             movieCreate('Guardians of the Galaxy', directors[4], '2014', 'A group of intergalactic criminals must pull together to ' +
-            'stop a fanatical warrior with plans to purge the universe.', [genres[10], genres[14], genres[5], genres[11]], callback);
+            'stop a fanatical warrior with plans to purge the universe.', [genres[10], genres[14], genres[5], genres[11]], 'guardians-of-the-galaxy.jpg', callback);
         },
         function(callback) {
             movieCreate('Thor: Ragnarok', directors[5], '2017', 'Imprisoned on the planet Sakaar, Thor must race against time ' +
             'to return to Asgard and stop Ragnarök, the destruction of his world, at the hands of the ' + 
-            'powerful and ruthless villain Hela.', [genres[10], genres[14], genres[5], genres[11]], callback);
+            'powerful and ruthless villain Hela.', [genres[10], genres[14], genres[5], genres[11]], 'thor-ragnarok.jpg', callback);
         },
         function(callback) {
             movieCreate('Jigarthanda', directors[6], '2014', 'An aspiring director targets a ruthless gangster because he ' +
             'wants to make a violent gangster film. His discreet attempts to research the gangster fail miserably.' + 
-            'Finally when he gets caught snooping, things hit the fan.', [genres[10], genres[7], genres[6]], callback);
+            'Finally when he gets caught snooping, things hit the fan.', [genres[10], genres[7], genres[6]], 'jigarthanda.jpg', callback);
         },
         function(callback) {
             movieCreate('Asuran', directors[7], '2019', 'The teenage son of a farmer from an underprivileged caste kills a rich, ' +
             'upper caste landlord. Will the farmer, a loving father and a pacifist by heart, be able to save his ' + 
-            'hot-blooded son is the rest of the story.', [genres[10], genres[6]], callback);
+            'hot-blooded son is the rest of the story.', [genres[10], genres[6]], 'asuran.jpg', callback);
         },
         function(callback) {
             movieCreate('Vada Chennai', directors[7], '2018', 'A young carrom player in north Chennai becomes a reluctant ' +
-            'participant in a war between two warring gangsters.', [genres[10], genres[14], genres[5], genres[11]], callback);
+            'participant in a war between two warring gangsters.', [genres[13], genres[6], genres[7]], 'vada-chennai.jpg', callback);
         },
 
     ])

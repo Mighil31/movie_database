@@ -5,16 +5,48 @@ var movie_controller = require('../controllers/movieController');
 var director_controller = require("../controllers/directorController");
 var genre_controller = require('../controllers/genreController');
 
+// Multer setup
+const multer = require('multer');
+var path = require("path");
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/images')
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      req.body.name.replace(/ /g,'') +
+        Date.now() +
+        path.extname(file.originalname)
+    )
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true)
+  } else {
+    cb(new Error('File formate should be PNG, JPG, or JPEG'))
+  }
+}
+
 /// MOVIE ROUTES ///
 
-// GET catalog home page.
 router.get('/', movie_controller.index);
 
 // GET request for creating a movie. 
 router.get('/movie/create', movie_controller.movie_create_get);
 
 // POST request for creating movie.
-router.post('/movie/create', movie_controller.movie_create_post);
+router.post('/movie/create', 
+    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'), 
+    movie_controller.movie_create_post
+);
 
 // GET request to delete movie.
 router.get('/movie/:id/delete', movie_controller.movie_delete_get);
@@ -26,7 +58,10 @@ router.post('/movie/:id/delete', movie_controller.movie_delete_post);
 router.get('/movie/:id/update', movie_controller.movie_update_get);
 
 // POST request to update movie.
-router.post('/movie/:id/update', movie_controller.movie_update_post);
+router.post('/movie/:id/update',
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'), 
+  movie_controller.movie_update_post);
+
 
 // GET request for one movie.
 router.get('/movie/:id', movie_controller.movie_detail);
@@ -36,11 +71,13 @@ router.get('/movies', movie_controller.movie_list);
 
 /// DIRECTOR ROUTES ///
 
-// GET request for creating director. NOTE This must come before route for id (i.e. display director).
 router.get('/director/create', director_controller.director_create_get);
 
 // POST request for creating director.
-router.post('/director/create', director_controller.director_create_post);
+router.post('/director/create', 
+    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'),
+    director_controller.director_create_post
+    );
 
 // GET request to delete director.
 router.get('/director/:id/delete', director_controller.director_delete_get);
@@ -49,10 +86,13 @@ router.get('/director/:id/delete', director_controller.director_delete_get);
 router.post('/director/:id/delete', director_controller.director_delete_post);
 
 // GET request to update director.
-router.get('/director/:id/update', director_controller.director_update_get);
+router.get('/director/:id/update', director_controller.director_update_get
+    );
 
 // POST request to update director.
-router.post('/director/:id/update', director_controller.director_update_post);
+router.post('/director/:id/update', 
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'), 
+  director_controller.director_update_post);
 
 // GET request for one director.
 router.get('/director/:id', director_controller.director_detail);

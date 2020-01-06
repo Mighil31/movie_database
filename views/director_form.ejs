@@ -34,6 +34,16 @@
                         <% str = director.date_of_birth %>
                     <% } %> 
                     <%= str %> >
+                    <div>
+                        <% if(typeof director != 'undefined' && director.image ) { %>
+                            <img src=<%= director.image_file %>  width='100px' height='100px' style="margin-top:30px; margin-bottom:30px">
+                            <label>Change current image</label>
+                            <input name="image" type="file" style="margin-top: 30px; margin-bottom: 30px">
+                        <% } else { %>
+                            <label>Image:</label>
+                            <input name="image" type="file" style="margin-top: 30px; margin-bottom: 30px">
+                        <% } %>
+                    </div>
 
                     <input type="submit" value="OK" style="display:block">
 

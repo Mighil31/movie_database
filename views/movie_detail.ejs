@@ -5,7 +5,11 @@
 
         <div class="movie_detail">
             <div class="image">
-                <img src='/images/1917.jpg'>
+                <% if (movie.image) { %>
+                    <img src=<%=movie.image_file %> width='190px' height='270px'>
+                <% } else { %>
+                    <img src='images/noimage.png' width='190px' height='270px'>
+                <% } %>
             </div>
             <p><span class="sub-heading">Director</span>: <a href=<%=movie.director.url%> ><%= movie.director.name %></a></p>
             <% var genreString = ""; %>

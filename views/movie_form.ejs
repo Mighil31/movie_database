@@ -4,7 +4,7 @@
             <h1>Add a movie</h1>
 
             <div class="form">
-                <form action="" method="POST">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <label for="name">Movie Name</label>
                     <input type="text" id="name" name="name" value=
                     <% var str; %>
@@ -19,7 +19,7 @@
                     <select name="director">
                         <% directors.forEach(function(director) { %>
                             <% if(typeof movie !== 'undefined') { %>
-                                <option value= <%= director._id %> <%= (director._id.toString()==movie.director || director._id.toString()==movie.director._id) ? 'selected="selected"' : "" %> ><%= director.name %> </option>
+                                <option value= <%= director._id %> <%= (director._id.toString()==movie.director._id) ? 'selected="selected"' : "" %> ><%= director.name %> </option>
                         <% } else { %>
                             <option value= <%= director._id %> ><%= director.name %> </option>
                             <% } %>
@@ -47,9 +47,19 @@
                                 <label for= <%= genre._id %> ><%= genre.name %> </label>
                         <% }) %>
                     </div>
-
+                    <div>
+                        <% if(typeof movie != 'undefined' && movie.image ) { %>
+                            <img src=<%= movie.image_file %>  width='126px' height='180px' style="margin-top:30px; margin-bottom:30px">
+                            <label>Change current image</label>
+                            <input name="curImage" value=<%= movie.image %> type="hidden">
+                            <input name="image" type="file" style="margin-top: 30px; margin-bottom: 30px">
+                        <% } else { %>
+                            <label>Image:</label>
+                            <input name="image" type="file" style="margin-top: 30px; margin-bottom: 30px">
+                        <% } %>
+                        
+                    </div>
                     <input type="submit" value="OK" style="display:block">
-
                     <% if (typeof errors != 'undefined'){%>
                         <p class="error">
                         <% errors.forEach(function(el) { %>

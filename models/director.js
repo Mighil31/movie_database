@@ -7,7 +7,8 @@ var DirectorSchema = new Schema(
     {
         first_name: {type:String, required:true, max:100},
         last_name: {type: String, required:true, max:100},
-        date_of_birth: {type: Date},
+		date_of_birth: {type: Date},
+		image: {type: String},
     }
 );
 
@@ -41,6 +42,11 @@ DirectorSchema
 
 	return fullname;
 });
+
+// Image location virtual
+DirectorSchema.virtual('image_file').get(function() {
+    return '/images/' + this.image
+  })
 
 DirectorSchema
 .virtual('dob')

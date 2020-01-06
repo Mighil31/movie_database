@@ -4,6 +4,13 @@
         <h1 class="movie_heading"><%= director.first_name %> <%= director.last_name %></h1>
 
         <div class="movie_detail">
+            <div class="image">
+                <% if (director.image) { %>
+                    <img src=<%=director.image_file %> width='190px' height='270px'>
+                <% } else { %>
+                    <img src='images/undefined.jpg' width='190px' height='270px'>
+                <% } %>
+            </div>
             <p><span  class="sub-heading">Date of Birth: </span> <%= director.dob %></p>
             <p><span  class="sub-heading">Age: </span> <%= director.age %></p>
             <p><span  class="sub-heading">Movies:</p>

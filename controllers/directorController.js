@@ -5,6 +5,8 @@ var Movie = require('../models/movie');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
+var multer = require('multer');
+
 // Display list of all directors
 exports.director_list = function(req, res) {
     Director.find()
@@ -79,6 +81,7 @@ exports.director_create_post = [
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     date_of_birth: req.body.date_of_birth,
+                    image: req.file ? req.file.filename : null
                 });
             director.save(function (err) {
                 if (err) { return next(err); }
@@ -141,10 +144,55 @@ exports.director_delete_post = function(req, res, next) {
 
 // Display director update form on GET.
 exports.director_update_get = function(req, res) {
-    res.send('director update GET');
+    async.parallel({
+        director: function(callback) {
+            Director.find(callback);
+        },
+        }, function(err, results) {
+
+            if (err) { return next(err); }
+
+            res.render('director_form', { title: 'Update Director', director: results.director});
+        });
 };
 
 // Handle director update on POST.
-exports.director_update_post = function(req, res) {
-    res.send('director update POST');
-};
+exports.director_update_post = [
+
+    // Validate fields.
+    body('first_name').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
+        .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
+    body('last_name').isLength({ min: 1 }).trim().withMessage('Last name must be specified.')
+        .isAlphanumeric().withMessage('Last name has non-alphanumeric characters.'),
+    body('date_of_birth', 'Invalid date of birth').optional({ checkFalsy: true }).isISO8601(),
+
+    sanitizeBody('first_name').escape(),
+    sanitizeBody('last_name').escape(),
+    sanitizeBody('date_of_birth').toDate(),
+
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            res.render('director_form', { title: 'Create Director', director: req.body, errors: errors.array() });
+            return;
+        }
+        else {
+
+            // Create director object with escaped and trimmed data.
+            var director = new Director(
+                {
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    date_of_birth: req.body.date_of_birth,
+                    _id:req.params.id,
+                    image: req.file ? req.file.filename : null
+                });
+            Director.findByIdAndUpdate(req.params.id, director, {}, function (err,thedirector) {
+                if (err) { return next(err); }
+                    res.redirect(thedirector.url);
+                });
+        }
+    }
+];
