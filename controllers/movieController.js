@@ -3,6 +3,7 @@ var Director = require('../models/director');
 var Genre = require('../models/genre');
 
 var async = require('async');
+const fs = require('fs')
 var multer = require('multer');
 
 const { body,validationResult } = require('express-validator/check');
@@ -167,22 +168,46 @@ exports.movie_delete_get = function(req, res) {
 
 // Handle movie delete on POST.
 exports.movie_delete_post = function(req, res) {
-    async.parallel({
-        movie: function(callback) {
-          Movie.findById(req.body.movieid).exec(callback)
-        },
-    }, function(err, results) {
-        if (err) { return next(err); }
-        // Success
+//     async.parallel({
+//         movie: function(callback) {
+//           Movie.findById(req.body.movieid).exec(callback)
+//         },
+//     }, function(err, results) {
+//         if (err) { return next(err); }
+//         // Success
         
-        Movie.findByIdAndRemove(req.body.movieid, function deletemovie(err) {
-            if (err) { return next(err); }
-            // Success - go to director list
-            res.redirect('/movies')
-        })
+//         Movie.findByIdAndRemove(req.body.movieid, function deletemovie(err) {
+//             if (err) { return next(err); }
+//             // Success - go to director list
+//             res.redirect('/movies')
+//         })
         
-    });
-};
+//     });
+// };
+    Movie.findById(req.body.movieid).exec((err, movieToDelete) => {
+    if (err) {
+      return next(err)
+    }
+
+    // If there is an image, delete image as well.
+    if (movieToDelete.image != null) {
+      fs.unlink('./public' + movieToDelete.image_file, err => {
+        if (err) {
+          return next(err)
+        }
+        console.log('./public' + movieToDelete.image_file + ' was deleted')
+      })
+    }
+
+    Movie.findByIdAndRemove(req.body.movieid, function deletemovie(err) {
+      if (err) {
+        return next(err)
+      }
+
+      res.redirect('/movies')
+    })
+  })
+}
 
 // Display movie update form on GET.
 exports.movie_update_get = function(req, res, next) {

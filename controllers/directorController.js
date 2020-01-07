@@ -4,6 +4,7 @@ var Movie = require('../models/movie');
 
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+const fs = require('fs')
 
 var multer = require('multer');
 
@@ -132,6 +133,15 @@ exports.director_delete_post = function(req, res, next) {
             return;
         }
         else {
+                // If there is an image, delete image as well.
+            if (director.image != null) {
+                fs.unlink('./public' + director.image_file, err => {
+                if (err) {
+                    return next(err)
+                }
+                console.log('./public' + director.image_file + ' was deleted')
+                })
+            }
             // director has no movies. Delete object and redirect to the list of directors.
             Director.findByIdAndRemove(req.body.directorid, function deletedirector(err) {
                 if (err) { return next(err); }
